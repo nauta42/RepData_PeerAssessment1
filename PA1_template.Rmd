@@ -35,7 +35,7 @@ barplot(height = dsteps$SUM, names.arg = dsteps$date, main = "Barplot of the tot
 ```
 
 Make a histogram of the total number of steps taken each day
-```{r histogram, echo=TRUE, fig.height=4}
+```{r histogram, echo=TRUE, fig.height=7}
 hist(dsteps$SUM, main = "Histogram of the total number of steps taken per day", xlab = "Total steps per day", labels = TRUE, col = "yellow")
 ```
 
@@ -53,12 +53,18 @@ MEDIAN <- as.character(round(median(dsteps$SUM), 2))
 
 1. Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
 ```{r average, echo=TRUE}
+act <- transform(act, interval=factor(interval))
+avgsteps <- aggregate(steps ~ interval, act, FUN = mean )
+plot(x = avgsteps$interval, y = avgsteps$steps, type = "l", main = "Average number of steps, across all days", ylab = "mean steps" )
+lines(avgsteps)
+
 ```
 
 2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 ```{r interval, echo=TRUE}
+maxstepsinterval <- levels(avgsteps$interval)[which.max(avgsteps$steps)]
 ```
-
+- Interval that contains the maximum number of steps: `r maxstepsinterval`
 
 ## Imputing missing values
 
