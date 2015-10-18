@@ -139,7 +139,20 @@ Differences between strategies: ignoring NA values vs replacing them with zeroes
 - Percentual log variation of medians: 3.5 %  
 
 
-
 ## Are there differences in activity patterns between weekdays and weekends?
 
+1. Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day
+
+```r
+act2$daytype <- factor(weekdays(as.Date(act2$date)) %in%  c("Sunday", "Saturday"), levels = c("FALSE", "TRUE"), labels = c("weekday","weekend") )
+```
+2. Make a panel plot containing a time series plot 
+
+```r
+library(lattice)
+#avgsteps <- aggregate(steps ~ interval, act, FUN = mean )
+xyplot(steps ~ interval|daytype, data = act2, layout=c(1,2) )
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-7-1.png) 
 
