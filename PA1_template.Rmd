@@ -14,6 +14,7 @@ activity <- read.csv(unz(description = "activity.zip", filename = "activity.csv"
 str(activity)
 ```
 
+
 ## What is mean total number of steps taken per day?
 
 For this part of the assignment, you can ignore the missing values in the dataset.
@@ -35,18 +36,19 @@ barplot(height = dsteps$SUM, names.arg = dsteps$date, main = "Barplot of the tot
 ```
 
 Make a histogram of the total number of steps taken each day
-```{r histogram, echo=TRUE, fig.height=7}
+```{r histogram1, echo=TRUE, fig.height=7}
 hist(dsteps$SUM, main = "Histogram of the total number of steps taken per day", xlab = "Total steps per day", labels = TRUE, col = "yellow")
 ```
 
 3. Calculate and report the mean and median of the total number of steps taken per day
-
 ```{r mean, echo=TRUE}
-MEAN <- as.character(round(mean(dsteps$SUM), 2))
-MEDIAN <- as.character(round(median(dsteps$SUM), 2))
+mean1 <- mean(dsteps$SUM)
+median1 <- median(dsteps$SUM)
+MEAN1 <- as.character(round(mean1, 2))
+MEDIAN1 <- as.character(round(median1, 2))
 ```
-- Mean of the total number of steps per day: `r MEAN`
-- Median of the total number of steps per day: `r MEDIAN`
+- Mean of the total number of steps per day: `r MEAN1`
+- Median of the total number of steps per day: `r MEDIAN1`
 
 
 ## What is the average daily activity pattern?
@@ -66,10 +68,54 @@ maxstepsinterval <- levels(avgsteps$interval)[which.max(avgsteps$steps)]
 ```
 - Interval that contains the maximum number of steps: `r maxstepsinterval`
 
+
 ## Imputing missing values
 
-```{r imputting, echo=TRUE}
+1. Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)
+```{r}
+missingvalues <- sum(is.na(activity$steps))
 ```
+- Total number of missing values: `r missingvalues`
+
+My strategy for the missing values in the dataset is filling in with zeroes
+```{r}
+act2 <- activity
+act2[is.na(act2)] <- 0
+```
+
+Histogram of the total number of steps taken each day with NA values replaced with zeroes
+```{r histogram2, echo=TRUE, fig.height=7}
+dsteps2 <- aggregate(steps ~ date, data = act2, FUN = sum )
+colnames(dsteps2)[2] <- "SUM"
+hist(dsteps2$SUM, main = "Histogram of the total number of steps taken per day", xlab = "Total steps per day", labels = TRUE, col = "orange")
+
+```
+
+```{r}
+mean2 <- mean(dsteps2$SUM)
+median2 <- median(dsteps2$SUM)
+MEAN2 <- as.character(round(mean2, 2))
+MEDIAN2 <- as.character(round(median2, 2))
+```
+- Mean of the total number of steps per day: `r MEAN2`
+- Median of the total number of steps per day: `r MEDIAN2`
+
+```{r}
+meandiff <- mean1 - mean2
+mediandiff <- median1 - median2
+MEANDIFF <- as.character(round(meandiff, 2))
+MEDIANDIFF <- as.character(round(mediandiff, 2))
+
+meanlog <- log(mean1/mean2)*100
+medianlog <- log(median1/median2)*100
+MEANLOG <- as.character(round(meanlog, 2))
+MEDIANLOG <- as.character(round(medianlog, 2))
+```
+Differences between strategies: ignoring NA values vs replacing them with zeroes.  
+- Difference of means: `r MEANDIFF`  
+- Difference of medians: `r MEDIANDIFF`  
+- Percentual log variation of means: `r MEANLOG` %  
+- Percentual log variation of medians: `r MEDIANLOG` %  
 
 
 
