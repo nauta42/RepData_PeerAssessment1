@@ -150,8 +150,8 @@ act2$daytype <- factor(weekdays(as.Date(act2$date)) %in%  c("Sunday", "Saturday"
 
 ```r
 library(lattice)
-#avgsteps <- aggregate(steps ~ interval, act, FUN = mean )
-xyplot(steps ~ interval|daytype, data = act2, layout=c(1,2) )
+steps2 <- aggregate(steps ~ interval + daytype, data = act2, FUN = mean)
+xyplot(steps ~ interval|daytype, type = "l", data = steps2, layout=c(1,2))
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-7-1.png) 
